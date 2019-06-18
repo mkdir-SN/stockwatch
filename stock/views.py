@@ -5,7 +5,7 @@ from stock.models import Ticker # model
 
 @login_required
 def addticker_view(request):
-	form = TickerForm(request.POST)
+	form = TickerForm(request.POST, user=request.user)
 	if form.is_valid():
 		instance = form.save(commit=False)
 		instance.user = request.user
