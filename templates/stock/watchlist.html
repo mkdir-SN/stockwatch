@@ -1,5 +1,7 @@
 <h1> watchlist.html </h1>
 
-{% for t in ticker_list %}
-	<li> {{ t.ticker }} </li>
+{% for stock_info in stock_infos %}
+ 	{% for info in stock_info %}
+ 		<p> {{ info }} <p>
+ 	{% endfor %}
 {% endfor %}
