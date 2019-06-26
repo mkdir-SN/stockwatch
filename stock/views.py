@@ -21,9 +21,9 @@ def watchlist_view(request):
 	# access model's Stock object for each qs object and pass into template as context variable
 	stock_objs = [Stock(function=q.time_series, symbol=q.ticker, interval=q.interval) for q in qs[:6]]
 	stock_infos = [s.stock_info() for s in stock_objs]
-	context = {'stock_infos': stock_infos}
+	stock_prices = [s.stock_prices() for s in stock_objs]
+	context = {'stock_infos': stock_infos, 'stock_prices': stock_prices}
 	return render(request, 'stock/watchlist.html', context)
-
 
 
 
