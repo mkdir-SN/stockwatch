@@ -35,5 +35,15 @@ class Stock:
 		return [key[3:] + ': ' + self.json_data['Meta Data'][key] for key in self.json_data['Meta Data'].keys()]
 
 	def stock_prices(self):
-		key = 'Time Series (' + self.interval + 'min)'
-		return self.json_data[key]
+		prices_by_type = {'open': [], 'high': [], 'low': [], 'close': []}
+		types = ['1. open', '2. high', '3. low', '4. close']
+		for t in types:
+			prices_by_type[t[3:]].extend(self.stock_type_prices(t))
+		return prices_by_type
+		
+	def stock_type_prices(self, type):
+		key = 'Time Series (' + str(self.interval) + 'min)'
+		price_data = self.json_data[key]
+		times = price_data.keys()
+		return [float(price_data[t][type]) for t in times]
+
