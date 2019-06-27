@@ -1,62 +1,90 @@
-
-
-<html>
+<html lang="en">
 	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-</head>
+
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'stock/watchlist.css' %}">
+
+
+	</head>
 	<head>
 	<body>
-		<h1> watchlist.html </h1>
-		{% for stock_info in stock_infos %}
- 			{% for info in stock_info %}
- 				<p> {{ info }} <p>
- 			{% endfor %}
+		<div class="main-container">
+		<h3> {{ username }}'s Stock Watchlist </h3>
+		{% for s in stock_name_and_prices %}
+			<div class="card" style="width:auto;">
+  				<div class="card-body">
+    				<h5 class="card-title"> {{ s.0 }} </h5>
+   					<h6 class="card-subtitle mb-2 text-muted"> {{ s.1 }} </h6>
+   					<p>
+   						<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseGraph{{ forloop.counter0 }}" aria-expanded="false" aria-controls="collapseGraph{{ forloop.counter0 }}">
+    					Price Trends
+  						</button>
+  					</p>
+  					<div class="collapse" id="collapseGraph{{ forloop.counter0 }}">
+  						<div class="card card-body">
+  							<canvas id="myChart{{ forloop.counter0 }}" width="600" height="400">
+  							<script>
+  								var options = {
+  									type: 'line',
+  									data: {
+							    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+							    datasets: [
+										{
+										label: "High",
+										data : [65,8,90,81,56,55],
+										backgroundColor :'rgba(87,8,247,0.23)',
+										borderColor : '#8b53fc',
+										pointBackgroundColor:'#8b53fc',
+										pointBorderColor : '#8b53fc'
+										},
+										{
+										label: "Low",
+										data: [7, 11, 5, 8, 3, 7],
+										backgroundColor :'rgba(46,204,112,0.33)',
+										borderColor : '#2ecc70',
+										pointBackgroundColor:'#2ecc70',
+										pointBorderColor : '#2ecc70'
+										},
+									]
+							  	},
+							  	options: {
+							  	title: {
+							            display: true,
+							            text: 'Price Trends'
+							        },
+							  	scales: {
+							    	yAxes: [{
+							        ticks: {
+												reverse: false
+							        }
+							      }]
+							    }
+							  }
+							}
+
+							var ctx = document.getElementById("myChart" + {{ forloop.counter0 }}).getContext('2d');
+							new Chart(ctx, options);
+
+							</script>
+  						</div>
+					</div>
+				</div>
+			</div>
 		{% endfor %}
-		
-		
-		<div id="price_chart">
-   			<canvas id="canvas"></canvas>
+
 		</div>
 
-		<script>
-			var canvas = document.getElementById('canvas');
-			var ctx = canvas.getContext('2d');
-
-			var myChart = new Chart(ctx, {
-			   type: 'line',
-			   data: {
-			      labels: ["2010", "2011", "2012", "2013"],
-			      datasets: [{
-			        label: 'High',
-			        data: [150, 200, 250, 150],
-			        backgroundColor :'rgba(5,252,174,0)',
-					borderColor : '#85C1E9',
-					pointBackgroundColor:' #85C1E9',
-					pointBorderColor : '#85C1E9',
-			      }, {
-			        label: 'Low',
-			        data: [250, 100, 150, 10],
-			        backgroundColor :'rgba(5,252,174,0)',
-					borderColor : '#52BE80',
-					pointBackgroundColor:'#52BE80',
-					pointBorderColor : '#52BE80',
-			      }, {
-			        label: 'Open',
-			        data: [300, 20, 30, 10],
-			        backgroundColor :'rgba(5,252,174,0)',
-					borderColor : '#76D7C4',
-					pointBackgroundColor:'#76D7C4',
-					pointBorderColor : '#76D7C4',
-			      }, { 
-			      	label: 'Close',
-			        data : [65,8,90,81,56,55,40,],
-					backgroundColor :'rgba(5,252,174,0)',
-					borderColor : '#BB8FCE',
-					pointBackgroundColor:'#BB8FCE',
-					pointBorderColor : '#BB8FCE',
-			      }]
-			   }
-			});
-		</script>
+    	<!-- Bootstrap -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	</body>
 </html>
+
