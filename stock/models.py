@@ -14,10 +14,10 @@ class Ticker(models.Model):
 		(60, '60')
 	]
 
-	INTRADAY = 'INTRADAY'
-	DAILY = 'DAILY'
-	WEEKLY = 'WEEKLY'
-	MONTHLY = 'MONTHLY'
+	INTRADAY = 'Intraday'
+	DAILY = 'Daily'
+	WEEKLY = 'Weekly'
+	MONTHLY = 'Monthly'
 
 
 	TIME_SERIES_CHOICES = [
@@ -29,8 +29,16 @@ class Ticker(models.Model):
 
 	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 	ticker = models.CharField(max_length=10, blank=False) 
-	time_series = models.CharField(max_length=20, choices=TIME_SERIES_CHOICES, default=MONTHLY)
-	interval = models.IntegerField(choices=INTERVAL_CHOICES, default=30)
+	time_series = models.CharField(max_length=20, null=False, blank=False, choices=TIME_SERIES_CHOICES)
+	interval = models.IntegerField(choices=INTERVAL_CHOICES, null=True, blank=True)
+
+class TickerPrice(models.Model):
+	ticker = models.ForeignKey(Ticker, on_delete=models.CASCADE)
+	date = models.CharField(max_length=50, blank=False)
+	open_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
+	high_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
+	low_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
+	close_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
 
 class History(models.Model): # if stock bought or sold
 	ticker = models.ForeignKey(Ticker, on_delete=models.PROTECT) # raise error on deletion of Ticker with History objects associated with it
