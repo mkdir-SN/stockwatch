@@ -33,13 +33,11 @@
   						<div class="card card-body">
   							<canvas id="myChart{{ forloop.counter0 }}" width="600" height="400">
   							<script>
-  								var labels = {{ s.2|safe }};
-  								console.log(labels);
 
   								var options = {
   									type: 'line',
   									data: {
-							    labels: labels,
+							    labels: {{ s.2|safe }},
 							    datasets: [
 										{
 										label: "Open",
