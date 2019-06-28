@@ -37,8 +37,8 @@ class Stock:
 		return [key[3:] + ': ' + self.json_data['Meta Data'][key] for key in self.json_data['Meta Data'].keys()]
 
 	def stock_symbol(self):
-	 	return self.symbol
-	
+		return self.symbol
+
 	def stock_prices(self):
 		prices_by_type = {'open': [], 'high': [], 'low': [], 'close': []}
 		types = ['1. open', '2. high', '3. low', '4. close']
