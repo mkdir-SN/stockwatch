@@ -27,7 +27,7 @@ class Ticker(models.Model):
 		(MONTHLY, 'Monthly')
 	]
 
-	user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-	ticker = models.CharField(max_length=10, blank=False) 
-	time_series = models.CharField(max_length=20, null=False, blank=False, choices=TIME_SERIES_CHOICES)
+	user = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+	ticker = models.CharField(max_length=10) 
+	time_series = models.CharField(max_length=20, choices=TIME_SERIES_CHOICES)
 	interval = models.IntegerField(choices=INTERVAL_CHOICES, null=True, blank=True)
