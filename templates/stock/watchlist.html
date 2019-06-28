@@ -1,25 +1,27 @@
-<html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8">
-    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- Bootstrap -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% extends 'stockwatch/navbar.html' %}
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+{% block loading %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'stock/watchlist.css' %}">
+{% endblock %}
 
-		{% load static %}
-		<link rel="stylesheet" type="text/css" href="{% static 'stock/watchlist.css' %}">
+{% block first-item %} <a class="nav-link" href="/watchlist">Watchlist</a> {% endblock %}
+{% block second-item %} <a class="nav-link" href="/add-ticker">Add Stock</a> {% endblock %}
+{% block third-item %} <a class="nav-link" href="/accounts/logout">Logout</a> {% endblock %}
 
-
-	</head>
-	<head>
-	<body>
-		<div class="main-container">
-		<h3> {{ username }}'s Stock Watchlist </h3>
+{% block body %}
+	<div class="main-container">
+		<h4> {{ username }}'s Stock Watchlist </h4>
 		{% for s in stock_name_and_prices %}
 			<div class="card" style="width:auto;">
   				<div class="card-body">
+  					<form method="POST">
+        				{% csrf_token %}
+        				<button type="submit" name="delete" class="close text-danger" aria-label="Close" value="{{ s.4 }}">
+ 						 	<span aria-hidden="true">&times;</span>
+						</button>
+    				</form>
     				<h5 class="card-title"> {{ s.0 }} </h5>
    					<h6 class="card-subtitle mb-2 text-muted"> {{ s.1 }} </h6>
    					<p>
@@ -31,22 +33,25 @@
   						<div class="card card-body">
   							<canvas id="myChart{{ forloop.counter0 }}" width="600" height="400">
   							<script>
+  								var labels = {{ s.2|safe }};
+  								console.log(labels);
+
   								var options = {
   									type: 'line',
   									data: {
-							    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+							    labels: labels,
 							    datasets: [
 										{
-										label: "High",
-										data : [65,8,90,81,56,55],
+										label: "Open",
+										data : [{% for i in s.3.open %}{{ i }},{% endfor %}],
 										backgroundColor :'rgba(87,8,247,0.23)',
 										borderColor : '#8b53fc',
 										pointBackgroundColor:'#8b53fc',
 										pointBorderColor : '#8b53fc'
 										},
 										{
-										label: "Low",
-										data: [7, 11, 5, 8, 3, 7],
+										label: "High",
+										data: [{% for i in s.3.high %}{{ i }},{% endfor %}],
 										backgroundColor :'rgba(46,204,112,0.33)',
 										borderColor : '#2ecc70',
 										pointBackgroundColor:'#2ecc70',
@@ -71,7 +76,6 @@
 
 							var ctx = document.getElementById("myChart" + {{ forloop.counter0 }}).getContext('2d');
 							new Chart(ctx, options);
-
 							</script>
   						</div>
 					</div>
@@ -81,10 +85,5 @@
 
 		</div>
 
-    	<!-- Bootstrap -->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	</body>
-</html>
+{% endblock %}
 

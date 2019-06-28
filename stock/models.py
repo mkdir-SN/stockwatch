@@ -31,23 +31,3 @@ class Ticker(models.Model):
 	ticker = models.CharField(max_length=10, blank=False) 
 	time_series = models.CharField(max_length=20, null=False, blank=False, choices=TIME_SERIES_CHOICES)
 	interval = models.IntegerField(choices=INTERVAL_CHOICES, null=True, blank=True)
-
-class TickerPrice(models.Model):
-	ticker = models.ForeignKey(Ticker, on_delete=models.CASCADE)
-	date = models.CharField(max_length=50, blank=False)
-	open_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
-	high_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
-	low_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
-	close_price = models.DecimalField(max_digits=10, decimal_places=4, blank=False, null=False)
-
-class History(models.Model): # if stock bought or sold
-	ticker = models.ForeignKey(Ticker, on_delete=models.PROTECT) # raise error on deletion of Ticker with History objects associated with it
-	open_price = models.IntegerField(blank=False, null=False)
-	high_price = models.IntegerField(blank=False, null=False)
-	low_price = models.IntegerField(blank=False, null=False)
-	close_price = models.IntegerField(blank=False, null=False)
-	volume_price = models.IntegerField(blank=False, null=False)
-	amount_bought = models.IntegerField(blank=False, null=False)
-	amount_spent = models.IntegerField(blank=False, null=False)
-	time_bought = models.IntegerField(blank=True, null=True)
-	time_sold = models.IntegerField(blank=True, null=True)
