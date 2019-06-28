@@ -1,0 +1,28 @@
+{% extends 'stockwatch/navbar.html' %}
+
+<h1> login.html </h1>
+
+{% block loading %}
+	{% load crispy_forms_tags %}
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'stockwatch/login.css' %}">
+{% endblock %}
+
+{% block body %}
+	<div class="main-container">
+		<h4> Login </h4>
+    	<form action="." method="post">
+			{% csrf_token %}
+			<div class="card">
+  				<div class="card-body">
+   					{{ form|crispy }}
+   					<button type="submit" class="btn btn-primary">Login</button>
+   					<a href="/accounts/register" class="card-link">Don't have an account?</a>
+	    		</div>
+  				</div>
+			</div>
+		</form>
+	</div>
+
+{% endblock %}
+

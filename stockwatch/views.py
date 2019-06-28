@@ -6,8 +6,11 @@ def register_view(request):
 		form = UserCreationForm(request.POST)
 		if form.is_valid(): 
 			form.save()
-			return redirect('/accounts/login') # what happens if form is not valid?
+			return redirect('/accounts/login') 
 	else:
 		form = UserCreationForm()
 		context = {'form': form}
-		return render(request, 'stockwatch/register.html', context)
+		return render(request, 'registration/register.html', context)
+
+def home_view(request):
+	return render(request, 'stockwatch/home.html')

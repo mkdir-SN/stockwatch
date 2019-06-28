@@ -14,21 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.views import LoginView
 
 from stock.views import (watchlist_view, addticker_view)
 from stockwatch.views import (
-	register_view,
+	register_view, home_view
 	)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # login view redirects to accounts/profile/ after successful login
-    path('accounts/profile/', watchlist_view),
-    path('accounts/login/', LoginView.as_view(template_name='stockwatch/login.html')), 
-    # path('accounts/logout', logout_view),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/register/', register_view),
+    path('home/', home_view),
     path('add-ticker/', addticker_view),
     path('watchlist/', watchlist_view),
-    path('register/', register_view),
 ]

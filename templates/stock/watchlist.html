@@ -18,7 +18,7 @@
   				<div class="card-body">
   					<form method="POST">
         				{% csrf_token %}
-        				<button type="submit" name="delete" class="close text-danger" aria-label="Close" value="{{ s.4 }}">
+        				<button type="submit" name="delete" class="close text-secondary" aria-label="Close" value="{{ s.4 }}">
  						 	<span aria-hidden="true">&times;</span>
 						</button>
     				</form>
@@ -26,25 +26,22 @@
    					<h6 class="card-subtitle mb-2 text-muted"> {{ s.1 }} </h6>
    					<p>
    						<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseGraph{{ forloop.counter0 }}" aria-expanded="false" aria-controls="collapseGraph{{ forloop.counter0 }}">
-    					Price Trends
+    					Prices Trends
   						</button>
   					</p>
   					<div class="collapse" id="collapseGraph{{ forloop.counter0 }}">
   						<div class="card card-body">
   							<canvas id="myChart{{ forloop.counter0 }}" width="600" height="400">
   							<script>
-  								var labels = {{ s.2|safe }};
-  								console.log(labels);
-
   								var options = {
   									type: 'line',
   									data: {
-							    labels: labels,
+							    labels: {{ s.2|safe }},
 							    datasets: [
 										{
 										label: "Open",
 										data : [{% for i in s.3.open %}{{ i }},{% endfor %}],
-										backgroundColor :'rgba(87,8,247,0.23)',
+										backgroundColor :'rgba(87,8,247,0.1)',
 										borderColor : '#8b53fc',
 										pointBackgroundColor:'#8b53fc',
 										pointBorderColor : '#8b53fc'
@@ -52,18 +49,40 @@
 										{
 										label: "High",
 										data: [{% for i in s.3.high %}{{ i }},{% endfor %}],
-										backgroundColor :'rgba(46,204,112,0.33)',
+										backgroundColor :'rgba(46,204,112,0.1)',
 										borderColor : '#2ecc70',
 										pointBackgroundColor:'#2ecc70',
 										pointBorderColor : '#2ecc70'
 										},
+										{
+										label: "Low",
+										data : [{% for i in s.3.low %}{{ i }},{% endfor %}],
+										backgroundColor :'rgba(247,114,99,0.1)',
+										borderColor : '#f77263',
+										pointBackgroundColor:'#f77263',
+										pointBorderColor : '#f77263',
+										label:"2013"},
+										{
+										label: "Close",
+										data : [{% for i in s.3.close %}{{ i }},{% endfor %}],
+										backgroundColor :'rgba(75,87,252,0.1)',
+										borderColor : '#4b57fc',
+										pointBackgroundColor:'#4b57fc',
+										pointBorderColor : '#4b57fc',
+										label:"2014"}
 									]
 							  	},
 							  	options: {
 							  	title: {
 							            display: true,
-							            text: 'Price Trends'
+							            text: 'Price Trends',
+							            fontSize: 15,
 							        },
+							    elements: {
+							    	point: {radius:2},
+							    	line: {tension:0.4,
+							    		borderWidth:2}
+							    },
 							  	scales: {
 							    	yAxes: [{
 							        ticks: {
