@@ -3,7 +3,7 @@ import json
 
 # Class-based API handling
 
-apikey = 'P6OBP81JQKGU00L8' # your API key here
+apikey = '' # your API key here
 
 def get_data(function, symbol, interval, size): 
 		url = 'https://www.alphavantage.co/query?function='+ str('time_series_' + function) + '&symbol=' + str(symbol) + '&outputsize=' + str(size) + '&apikey=' + str(apikey)
