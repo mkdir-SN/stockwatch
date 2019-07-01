@@ -3,9 +3,9 @@ import json
 
 # Class-based API handling
 
-apikey = 'P6OBP81JQKGU00L8' # your API key here
+apikey = '' # your API key here
 
-def get_data(function, symbol, interval, size):
+def get_data(function, symbol, interval, size): 
 		url = 'https://www.alphavantage.co/query?function='+ str('time_series_' + function) + '&symbol=' + str(symbol) + '&outputsize=' + str(size) + '&apikey=' + str(apikey)
 		if function == 'Intraday':
 			url = 'https://www.alphavantage.co/query?function='+ str('time_series_' + function) + '&symbol=' + str(symbol) + '&interval=' + str(interval) + 'min&outputsize=' + str(size) + '&apikey=' + str(apikey)
@@ -33,13 +33,15 @@ class Stock:
 			return False
 		return True
 
-	def stock_info(self):
+	def stock_info(self): 
+		# Returns string format of stock information
 		return [key[3:] + ': ' + self.json_data['Meta Data'][key] for key in self.json_data['Meta Data'].keys()]
 
 	def stock_symbol(self):
 		return self.symbol
 
 	def stock_prices(self):
+		# Returns re-structured dictionary of the different prices to fit Chart.js datasets
 		prices_by_type = {'open': [], 'high': [], 'low': [], 'close': []}
 		types = ['1. open', '2. high', '3. low', '4. close']
 		for t in types:
@@ -47,6 +49,7 @@ class Stock:
 		return prices_by_type
 
 	def stock_key(self):
+		# Returns which key should be used to dive into JSON API response based on time series
 		key = str(self.function) + ' Time Series'
 		if self.function == 'Intraday':
 			key = 'Time Series (' + str(self.interval) + 'min)'
@@ -55,13 +58,15 @@ class Stock:
 		return key
 
 	def stock_times(self):
+		# Returns stock times (a string) i.e. '2019-07-01', '2019-07-01 13:30:00'
 		key = self.stock_key()
 		price_data = self.json_data[key]
 		times = list(price_data.keys())
-		list.reverse(times) # to account for descending order of date in JSON response
+		list.reverse(times) # To account for descending order of date in JSON response
 		return times
 		
 	def stock_type_prices(self, type):
+		# Returns stock prices (a list) associated with one of the following stock types (a string): open, high, low, close
 		key = self.stock_key()
 		price_data = self.json_data[key]
 		times = price_data.keys()
@@ -70,5 +75,6 @@ class Stock:
 		return stock_type_prices
 
 	def stock_time_and_prices(self):
+		# Returns a list where each embedded list is [stock time (a string), a dictionary affiliated with stock time]
 		stock_time_and_prices = zip(stock_times, stock_prices)
 		return stock_time_and_prices
