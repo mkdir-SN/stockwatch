@@ -3,7 +3,7 @@ import json
 
 # Class-based API handling
 
-apikey = '' # your API key here
+apikey = '' # Alpha Vantage API key here
 
 def get_data(function, symbol, interval, size): 
 		url = 'https://www.alphavantage.co/query?function='+ str('time_series_' + function) + '&symbol=' + str(symbol) + '&outputsize=' + str(size) + '&apikey=' + str(apikey)
@@ -58,7 +58,7 @@ class Stock:
 		return key
 
 	def stock_times(self):
-		# Returns stock times (a string) i.e. '2019-07-01', '2019-07-01 13:30:00'
+		# Returns stock times (a list of strings) i.e. ['2019-07-01', '2019-07-01 13:30:00']
 		key = self.stock_key()
 		price_data = self.json_data[key]
 		times = list(price_data.keys())
@@ -66,7 +66,7 @@ class Stock:
 		return times
 		
 	def stock_type_prices(self, type):
-		# Returns stock prices (a list) associated with one of the following stock types (a string): open, high, low, close
+		# Returns stock prices (a list of floats) associated with one of the following stock types (a string): open, high, low, close
 		key = self.stock_key()
 		price_data = self.json_data[key]
 		times = price_data.keys()
